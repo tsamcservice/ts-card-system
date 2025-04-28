@@ -1,4 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 卡片系統
+
+這是一個使用 Next.js 和 TypeScript 開發的卡片系統。
+
+## 部署信息
+
+- 部署網址：https://ts-card-system.vercel.app
+- GitHub 倉庫：https://github.com/tsamcservice/ts-card-system
+- Vercel 專案：https://vercel.com/tsamcservice/ts-card-system
+
+## 開發注意事項
+
+1. 配置相關：
+   - 使用 `next.config.ts` 而不是 `next.config.js`
+   - 不要使用已棄用的 `swcMinify` 選項
+   - 確保 TypeScript 和 ESLint 配置正確
+
+2. 部署流程：
+   - 推送到 main 分支會自動觸發部署
+   - 部署狀態可以在 GitHub Actions 和 Vercel 儀表板查看
+   - 部署完成後可以通過 Vercel 網址訪問
+
+## 本地開發
+
+```bash
+# 安裝依賴
+npm install
+
+# 啟動開發服務器
+npm run dev
+
+# 構建生產版本
+npm run build
+
+# 啟動生產服務器
+npm start
+```
+
+## 技術棧
+
+- Next.js 15.3.1
+- TypeScript
+- Tailwind CSS
+- ESLint
 
 ## Getting Started
 
