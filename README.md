@@ -1,6 +1,29 @@
-# 卡片系統
+# 呈璽卡片編輯系統
 
-這是一個使用 Next.js 和 TypeScript 開發的卡片系統。
+[![Vercel Production Deployment](https://github.com/chengshisystem/ts/actions/workflows/vercel-deploy.yml/badge.svg?branch=master)](https://github.com/chengshisystem/ts/actions/workflows/vercel-deploy.yml)
+
+卡片編輯系統是一個基於 LINE LIFF 的網頁應用程序，允許用戶創建和分享自定義會員卡片。
+
+## 系統功能
+
+- 編輯卡片標題、副標題和會員資訊
+- 自定義卡片顏色和風格
+- 上傳自定義背景圖片和頭像
+- 將卡片分享到 LINE 聊天中
+- 自動與 LINE 帳號整合
+- 數據統計和分析
+
+## LINE 配置資訊
+
+### LIFF 設定
+- LIFF ID: 2007311192-PdD7dbDQ
+- LIFF URL: https://liff.line.me/2007311192-PdD7dbDQ
+- Channel ID: 2007311192
+- Channel Secret: 024b60eb53ccd162f8920c6795396ddb
+
+### 測試連結
+- LINE 內部開啟: https://liff.line.me/2007311192-PdD7dbDQ
+- 外部瀏覽器開啟: https://ts-card-system.vercel.app
 
 ## 部署信息
 

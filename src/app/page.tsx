@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardFormData } from '@/types/card';
 import { cardService } from '@/services/cardService';
 import { useLiff } from '@/contexts/LiffContext';
+import liff from '@line/liff';
 
 export default function Home() {
   const { user, isLoggedIn, login, shareCard } = useLiff();
@@ -11,9 +12,9 @@ export default function Home() {
   const [isEditing, setIsEditing] = useState(false);
   const [currentCard, setCurrentCard] = useState<Card | null>(null);
   const [formData, setFormData] = useState<CardFormData>({
-    title: '',
-    subtitle: '',
-    content: '',
+    title: '會員卡',
+    subtitle: '尊榮會員',
+    content: '感謝您成為我們的會員',
     backgroundColor: '#ffffff',
     textColor: '#000000',
     memberLevel: 'NORMAL',
@@ -47,9 +48,9 @@ export default function Home() {
       userId: user.userId,
     });
     setFormData({
-      title: '',
-      subtitle: '',
-      content: '',
+      title: '會員卡',
+      subtitle: '尊榮會員',
+      content: '感謝您成為我們的會員',
       backgroundColor: '#ffffff',
       textColor: '#000000',
       memberLevel: 'NORMAL',
@@ -79,9 +80,9 @@ export default function Home() {
     setIsEditing(false);
     setCurrentCard(null);
     setFormData({
-      title: '',
-      subtitle: '',
-      content: '',
+      title: '會員卡',
+      subtitle: '尊榮會員',
+      content: '感謝您成為我們的會員',
       backgroundColor: '#ffffff',
       textColor: '#000000',
       memberLevel: 'NORMAL',
@@ -92,6 +93,24 @@ export default function Home() {
   const handleDeleteCard = async (id: string) => {
     await cardService.deleteCard(id);
     loadCards();
+  };
+
+  const handleShareCard = async (cardId: string) => {
+    if (!liff.isLoggedIn()) {
+      login();
+      return;
+    }
+
+    try {
+      await liff.shareTargetPicker([
+        {
+          type: 'text',
+          text: `查看我的卡片：${window.location.origin}/card/${cardId}`,
+        },
+      ]);
+    } catch (error) {
+      console.error('Share failed:', error);
+    }
   };
 
   if (!isLoggedIn) {
@@ -219,9 +238,9 @@ export default function Home() {
                       setIsEditing(false);
                       setCurrentCard(null);
                       setFormData({
-                        title: '',
-                        subtitle: '',
-                        content: '',
+                        title: '會員卡',
+                        subtitle: '尊榮會員',
+                        content: '感謝您成為我們的會員',
                         backgroundColor: '#ffffff',
                         textColor: '#000000',
                         memberLevel: 'NORMAL',
@@ -274,7 +293,7 @@ export default function Home() {
                   編輯
                 </button>
                 <button
-                  onClick={() => shareCard(card.id)}
+                  onClick={() => handleShareCard(card.id)}
                   className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors"
                 >
                   分享

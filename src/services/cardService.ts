@@ -1,19 +1,47 @@
 import { Card, CardFormData } from '@/types/card';
 
+// 預設卡片模板
+const DEFAULT_CARDS: Card[] = [
+  {
+    id: '1',
+    userId: 'system',
+    title: '會員卡',
+    subtitle: '尊榮會員',
+    content: '感謝您成為我們的會員',
+    backgroundColor: '#E1E6E0',
+    textColor: '#A4924A',
+    memberLevel: 'NORMAL',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    userId: 'system',
+    title: '英文小旅行',
+    subtitle: '心靈大冒險',
+    content: '5/19(一)10:00~12:00',
+    backgroundColor: '#E1E6E0',
+    textColor: '#A4924A',
+    memberLevel: 'NORMAL',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
 // 模擬數據庫
-let cards: Card[] = [];
+let cards: Card[] = [...DEFAULT_CARDS];
 
 export const cardService = {
   // 獲取所有卡片
-  getAllCards: async (): Promise<Card[]> => {
-    return cards;
+  async getAllCards(): Promise<Card[]> {
+    return [...cards];
   },
 
   // 創建新卡片
-  createCard: async (data: CardFormData): Promise<Card> => {
+  async createCard(cardData: CardFormData & { userId: string }): Promise<Card> {
     const newCard: Card = {
       id: Date.now().toString(),
-      ...data,
+      ...cardData,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -22,13 +50,14 @@ export const cardService = {
   },
 
   // 更新卡片
-  updateCard: async (id: string, data: CardFormData): Promise<Card | null> => {
+  async updateCard(id: string, cardData: CardFormData): Promise<Card> {
     const index = cards.findIndex(card => card.id === id);
-    if (index === -1) return null;
-
+    if (index === -1) {
+      throw new Error('Card not found');
+    }
     const updatedCard = {
       ...cards[index],
-      ...data,
+      ...cardData,
       updatedAt: new Date().toISOString(),
     };
     cards[index] = updatedCard;
@@ -36,9 +65,11 @@ export const cardService = {
   },
 
   // 刪除卡片
-  deleteCard: async (id: string): Promise<boolean> => {
-    const initialLength = cards.length;
-    cards = cards.filter(card => card.id !== id);
-    return cards.length !== initialLength;
+  async deleteCard(id: string): Promise<void> {
+    const index = cards.findIndex(card => card.id === id);
+    if (index === -1) {
+      throw new Error('Card not found');
+    }
+    cards.splice(index, 1);
   },
 }; 
