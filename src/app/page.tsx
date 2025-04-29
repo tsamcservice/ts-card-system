@@ -5,6 +5,7 @@ import { Card, CardFormData } from '@/types/card';
 import { cardService } from '@/services/cardService';
 import { useLiff } from '@/contexts/LiffContext';
 import liff from '@line/liff';
+import Image from 'next/image';
 
 export default function Home() {
   const { user, isLoggedIn, login, shareCard } = useLiff();
@@ -19,10 +20,12 @@ export default function Home() {
     textColor: '#000000',
     memberLevel: 'NORMAL',
   });
+  const [templates, setTemplates] = useState<Card[]>([]);
 
   useEffect(() => {
     if (isLoggedIn && user) {
       loadCards();
+      loadTemplates();
     }
   }, [isLoggedIn, user]);
 
@@ -30,6 +33,15 @@ export default function Home() {
     if (!user) return;
     const loadedCards = await cardService.getAllCards();
     setCards(loadedCards.filter(card => card.userId === user.userId));
+  };
+
+  const loadTemplates = async () => {
+    try {
+      const loadedTemplates = await cardService.getAllCards();
+      setTemplates(loadedTemplates.filter(card => card.templateType));
+    } catch (error) {
+      console.error('Error loading templates:', error);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -110,6 +122,18 @@ export default function Home() {
       ]);
     } catch (error) {
       console.error('Share failed:', error);
+    }
+  };
+
+  const handleTemplateSelect = async (template: Card) => {
+    try {
+      if (!user) {
+        console.log('Please login first');
+        return;
+      }
+      console.log('Selected template:', template);
+    } catch (error) {
+      console.error('Error selecting template:', error);
     }
   };
 
@@ -307,6 +331,35 @@ export default function Home() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* 模板列表 */}
+        <div className="mt-8 p-6 bg-white rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">
+            選擇模板
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {templates.map((template) => (
+              <div
+                key={template.id}
+                className="border rounded-lg p-4 cursor-pointer hover:shadow-lg"
+                onClick={() => handleTemplateSelect(template)}
+              >
+                <h2 className="text-xl font-bold mb-2">{template.title}</h2>
+                <p className="text-gray-600">{template.content}</p>
+                {template.backgroundImage && (
+                  <div className="relative w-full h-48 mt-4">
+                    <Image
+                      src={template.backgroundImage}
+                      alt={template.title}
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </main>
